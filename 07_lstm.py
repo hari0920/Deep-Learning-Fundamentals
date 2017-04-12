@@ -1,33 +1,21 @@
-#Inspired by https://github.com/aymericdamien/TensorFlow-Examples/blob/master/examples/3%20-%20Neural%20Networks/recurrent_network.py
+'''
+A Recurrent Neural Network (LSTM) implementation example using TensorFlow library.
+This example is using the MNIST database of handwritten digits (http://yann.lecun.com/exdb/mnist/)
+Long Short Term Memory paper: http://deeplearning.cs.cmu.edu/pdfs/Hochreiter97_lstm.pdf
+Author: Aymeric Damien
+Project: https://github.com/aymericdamien/TensorFlow-Examples/
+'''
+
+from __future__ import print_function
+
 import tensorflow as tf
 from tensorflow.contrib import rnn
 
-import numpy as np
+# Import MNIST data
 from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
 
-# configuration
-#                        O * W + b -> 10 labels for each image, O[? 28], W[28 10], B[10]
-#                       ^ (O: output 28 vec from 28 vec input)
-#                       |
-#      +-+  +-+       +--+
-#      |1|->|2|-> ... |28| time_step_size = 28
-#      +-+  +-+       +--+
-#       ^    ^    ...  ^
-#       |    |         |
-# img1:[28] [28]  ... [28]
-# img2:[28] [28]  ... [28]
-# img3:[28] [28]  ... [28]
-# ...
-# img128 or img256 (batch_size or test_size 256)
-#      each input size = input_vec_size=lstm_size=28
-
-# configuration variables
-input_vec_size = lstm_size = 28
-time_step_size = 28
-
-batch_size = 128
-test_size = 256
-
+'''
 def init_weights(shape):
     return tf.Variable(tf.random_normal(shape, stddev=0.01))
 
